@@ -8,6 +8,12 @@ namespace TodoList.Core
     public class TodoTable
     {
         readonly List<Todo> values = new List<Todo>();
+        readonly IStorage storage;
+
+        public TodoTable(IStorage storage)
+        {
+            this.storage = storage;
+        }
 
         public void Add(Todo todo)
         {
@@ -17,6 +23,11 @@ namespace TodoList.Core
         public Todo GetLastTodo()
         {
             return this.values.LastOrDefault();
+        }
+
+        public void Buckup()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Todo.cs" />
     <Compile Include="TodoTable.cs" />
