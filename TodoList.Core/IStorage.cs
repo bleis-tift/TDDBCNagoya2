@@ -7,6 +7,8 @@ namespace TodoList.Core
 {
     public interface IStorage
     {
+        IList<Todo> LoadAllTodo();
+
         void Save(Todo todo);
     }
 
@@ -16,6 +18,11 @@ namespace TodoList.Core
 
         class NullStorage : IStorage
         {
+            public IList<Todo> LoadAllTodo()
+            {
+                return new List<Todo>();
+            }
+
             public void Save(Todo todo)
             {
                 // do nothing

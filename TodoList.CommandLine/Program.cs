@@ -20,15 +20,24 @@ namespace TodoList.CommandLine
             switch (command)
             {
                 case "add":
-                    var title = args[1];
-                    var detail = args[2];
+                    {
+                        var title = args[1];
+                        var detail = args[2];
 
-                    var todo = new Todo(title, detail);
-                    todoTable.Add(todo);
-                    break;
+                        var todo = new Todo(title, detail);
+                        todoTable.Add(todo);
+                        break;
+                    }
                 case "show":
-                    Console.Error.WriteLine("エラー: TODOがありません。");
-                    break;
+                    {
+                        var type = args[1];
+                        var todo = todoTable.GetLastTodo();
+                        if (todo == null)
+                            Console.Error.WriteLine("エラー: TODOがありません。");
+                        else
+                            Console.WriteLine(todo);
+                        break;
+                    }
             }
         }
     }

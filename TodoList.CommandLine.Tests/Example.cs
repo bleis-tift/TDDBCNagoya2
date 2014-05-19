@@ -72,7 +72,7 @@ namespace TodoList.CommandLine.Tests
             {
                 proc.Start();
                 var output = proc.StandardOutput.ReadToEnd();
-                Assert.That(output, Is.EqualTo(string.Format("タイトル: {0}\r\n詳細: {1}", title, detail)));
+                Assert.That(output, Is.EqualTo(string.Format("タイトル: {0}\r\n詳細: {1}\r\n", title, detail)));
             }
         }
     }

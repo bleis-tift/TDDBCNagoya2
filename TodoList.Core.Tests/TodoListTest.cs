@@ -27,6 +27,7 @@ namespace TodoList.Core.Tests
         public void 空のTodoTableにTodoを追加したものはストレージに保存される(string title, string detail)
         {
             var storage = new Mock<IStorage>();
+            storage.Setup(_ => _.LoadAllTodo()).Returns(new List<Todo>());
             storage.Setup(_ => _.Save(new Todo(title, detail)));
 
             var todoTable = new TodoTable(storage.Object);

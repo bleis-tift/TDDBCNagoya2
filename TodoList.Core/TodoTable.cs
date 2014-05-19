@@ -7,12 +7,13 @@ namespace TodoList.Core
 {
     public class TodoTable
     {
-        readonly List<Todo> values = new List<Todo>();
         readonly IStorage storage;
+        readonly IList<Todo> values;
 
         public TodoTable(IStorage storage)
         {
             this.storage = storage;
+            this.values = this.storage.LoadAllTodo();
         }
 
         public void Add(Todo todo)

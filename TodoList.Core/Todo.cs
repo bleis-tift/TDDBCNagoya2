@@ -32,6 +32,11 @@ namespace TodoList.Core
             return this.title == other.title && this.detail == other.detail;
         }
 
+        public override string ToString()
+        {
+            return string.Format("タイトル: {0}\r\n詳細: {1}", this.title, this.detail);
+        }
+
         public override bool Equals(object obj)
         {
             var other = obj as Todo;
