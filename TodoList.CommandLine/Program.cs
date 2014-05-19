@@ -60,8 +60,8 @@ namespace TodoList.CommandLine
 
         static readonly IDictionary<string, Func<TodoTable, Todo>> deleters = new Dictionary<string, Func<TodoTable, Todo>>
         {
-            { "first", todoTable => todoTable.GetFirstTodo() },
-            { "last", todoTable => todoTable.GetLastTodo() }
+            { "first", todoTable => todoTable.DeleteFirstTodo() },
+            { "last", todoTable => todoTable.DeleteLastTodo() }
         };
 
         private static void Delete(TodoTable todoTable, string type)
@@ -72,6 +72,7 @@ namespace TodoList.CommandLine
                 Console.Error.WriteLine("エラー: TODOがありません。");
             else
                 Console.WriteLine(todo);
+            storage.Save();
         }
 
         static readonly IDictionary<string, Func<TodoTable, Todo>> getters = new Dictionary<string, Func<TodoTable, Todo>>

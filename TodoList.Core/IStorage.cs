@@ -13,6 +13,10 @@ namespace TodoList.Core
 
         Todo GetLastTodo();
 
+        Todo DeleteFirstTodo();
+
+        Todo DeleteLastTodo();
+
         IEnumerable<string> GetAllTitles();
     }
 
@@ -37,6 +41,24 @@ namespace TodoList.Core
             public Todo GetLastTodo()
             {
                 return this.values.LastOrDefault();
+            }
+
+            public Todo DeleteFirstTodo()
+            {
+                var first = this.GetFirstTodo();
+                if (first == null)
+                    return null;
+                this.values.RemoveAt(0);
+                return first;
+            }
+
+            public Todo DeleteLastTodo()
+            {
+                var last = this.GetLastTodo();
+                if (last == null)
+                    return null;
+                this.values.RemoveAt(this.values.Count - 1);
+                return last;
             }
 
             public IEnumerable<string> GetAllTitles()

@@ -29,6 +29,16 @@ namespace TodoList.Core
             return this.storage.GetFirstTodo();
         }
 
+        public Todo DeleteFirstTodo()
+        {
+            return this.storage.DeleteFirstTodo();
+        }
+
+        public Todo DeleteLastTodo()
+        {
+            return this.storage.DeleteLastTodo();
+        }
+
         public IEnumerable<string> GetAllTitles()
         {
             return this.storage.GetAllTitles();

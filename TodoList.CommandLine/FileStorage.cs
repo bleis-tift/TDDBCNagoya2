@@ -34,6 +34,24 @@ namespace TodoList.CommandLine
             return this.values.LastOrDefault();
         }
 
+        public Todo DeleteFirstTodo()
+        {
+            var first = this.GetFirstTodo();
+            if (first == null)
+                return null;
+            this.values.RemoveAt(0);
+            return first;
+        }
+
+        public Todo DeleteLastTodo()
+        {
+            var last = this.GetLastTodo();
+            if (last == null)
+                return null;
+            this.values.RemoveAt(this.values.Count - 1);
+            return last;
+        }
+
         public IEnumerable<string> GetAllTitles()
         {
             return this.values.Select(todo => todo.Title);

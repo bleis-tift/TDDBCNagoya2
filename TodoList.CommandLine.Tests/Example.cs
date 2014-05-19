@@ -160,6 +160,15 @@ namespace TodoList.CommandLine.Tests
                 var output = ExecuteAndReadStream(StreamKind.StandardOutput, "show", "last");
                 Assert.That(output, Is.EqualTo("タイトル: 買い物2\r\n詳細: 筆記用具\r\n"));
             }
+
+            [Test]
+            public void 最初に追加されたTODOを削除するとバックアップから消える()
+            {
+                var output = ExecuteAndReadStream(StreamKind.StandardOutput, "delete", "first");
+                var backup = XDocument.Load("backup.xml");
+                var expected = "<TodoList><Todo><Title>買い物2</Title><Detail>筆記用具</Detail></Todo></TodoList>";
+                Assert.That(backup.ToString(SaveOptions.DisableFormatting), Is.EqualTo(expected));
+            }
         }
     }
 }
