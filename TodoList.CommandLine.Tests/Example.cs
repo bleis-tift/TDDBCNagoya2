@@ -134,6 +134,13 @@ namespace TodoList.CommandLine.Tests
             }
 
             [Test]
+            public void 追加されたTODO一覧が見れる()
+            {
+                var output = ExecuteAndReadStream(StreamKind.StandardOutput, "list");
+                Assert.That(output, Is.EqualTo("1: 買い物\r\n2: 買い物2\r\n"));
+            }
+
+            [Test]
             public void 最初に追加したTODOの詳細が見れる()
             {
                 var output = ExecuteAndReadStream(StreamKind.StandardOutput, "show", "first");
