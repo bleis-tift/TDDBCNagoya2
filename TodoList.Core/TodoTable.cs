@@ -7,13 +7,16 @@ namespace TodoList.Core
 {
     public class TodoTable
     {
+        readonly List<Todo> values = new List<Todo>();
+
         public void Add(Todo todo)
         {
+            this.values.Add(todo);
         }
 
         public Todo GetLastTodo()
         {
-            return new Todo("買い物メモ", "牛乳と卵");
+            return this.values.LastOrDefault();
         }
     }
 }

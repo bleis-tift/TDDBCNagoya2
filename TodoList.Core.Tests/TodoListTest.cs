@@ -11,12 +11,13 @@ namespace TodoList.Core.Tests
     [TestFixture]
     public class TodoListTest
     {
-        [Test]
-        public void 空のTodoTableにTodoを追加してその詳細が取得できる()
+        [TestCase("買い物メモ", "牛乳と卵")]
+        [TestCase("買い物", "牛乳と卵を買う")]
+        public void 空のTodoTableにTodoを追加してその詳細が取得できる(string title, string detail)
         {
             var todoTable = new TodoTable();
-            todoTable.Add(new Todo("買い物メモ", "牛乳と卵"));
-            Assert.That(todoTable.GetLastTodo(), Is.EqualTo(new Todo("買い物メモ", "牛乳と卵")));
+            todoTable.Add(new Todo(title, detail));
+            Assert.That(todoTable.GetLastTodo(), Is.EqualTo(new Todo(title, detail)));
         }
     }
 }
