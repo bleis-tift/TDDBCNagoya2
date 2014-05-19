@@ -11,21 +11,32 @@ namespace TodoList.CommandLine
 {
     class FileStorage : IStorage
     {
-        readonly XElement xml;
+        readonly List<Todo> values;
 
         internal FileStorage()
         {
-            xml = File.Exists("backup.xml") ? XElement.Load("backup.xml") : new XElement("TodoList");
+            var xml = File.Exists("backup.xml") ? XElement.Load("backup.xml") : new XElement("TodoList");
+            this.values = xml.XPathSelectElements("//Todo").Select(e => new Todo(e.Element("Title").Value, e.Element("Detail").Value)).ToList();
         }
 
-        public IList<Todo> LoadAllTodo()
+        public void Append(Todo todo)
         {
-            return this.xml.XPathSelectElements("//Todo").Select(e => new Todo(e.Element("Title").Value, e.Element("Detail").Value)).ToList();
+            this.values.Add(todo);
         }
 
-        public void Save(Todo todo)
+        public Todo GetFirstTodo()
         {
-            var xml = new XElement("TodoList", todo.ToXml());
+            return this.values.FirstOrDefault();
+        }
+
+        public Todo GetLastTodo()
+        {
+            return this.values.LastOrDefault();
+        }
+
+        public void Save()
+        {
+            var xml = new XElement("TodoList", this.values.Select(todo => todo.ToXml()));
             xml.Save("backup.xml");
         }
     }

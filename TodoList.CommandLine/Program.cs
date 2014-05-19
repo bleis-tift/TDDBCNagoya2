@@ -26,16 +26,33 @@ namespace TodoList.CommandLine
 
                         var todo = new Todo(title, detail);
                         todoTable.Add(todo);
+                        storage.Save();
                         break;
                     }
                 case "show":
                     {
                         var type = args[1];
-                        var todo = todoTable.GetLastTodo();
-                        if (todo == null)
-                            Console.Error.WriteLine("エラー: TODOがありません。");
-                        else
-                            Console.WriteLine(todo);
+                        switch (type)
+                        {
+                            case "first":
+                                {
+                                    var todo = todoTable.GetFirstTodo();
+                                    if (todo == null)
+                                        Console.Error.WriteLine("エラー: TODOがありません。");
+                                    else
+                                        Console.WriteLine(todo);
+                                    break;
+                                }
+                            case "last":
+                                {
+                                    var todo = todoTable.GetLastTodo();
+                                    if (todo == null)
+                                        Console.Error.WriteLine("エラー: TODOがありません。");
+                                    else
+                                        Console.WriteLine(todo);
+                                    break;
+                                }
+                        }
                         break;
                     }
             }

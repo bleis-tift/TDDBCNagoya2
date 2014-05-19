@@ -7,25 +7,34 @@ namespace TodoList.Core
 {
     public interface IStorage
     {
-        IList<Todo> LoadAllTodo();
+        void Append(Todo todo);
 
-        void Save(Todo todo);
+        Todo GetFirstTodo();
+
+        Todo GetLastTodo();
     }
 
     public static class Storage
     {
-        public static readonly IStorage Null = new NullStorage();
+        public static readonly IStorage Memory = new OnMemoryStorage();
 
-        class NullStorage : IStorage
+        class OnMemoryStorage : IStorage
         {
-            public IList<Todo> LoadAllTodo()
+            List<Todo> values = new List<Todo>();
+
+            public void Append(Todo todo)
             {
-                return new List<Todo>();
+                this.values.Add(todo);
             }
 
-            public void Save(Todo todo)
+            public Todo GetFirstTodo()
             {
-                // do nothing
+                return this.values.FirstOrDefault();
+            }
+
+            public Todo GetLastTodo()
+            {
+                return this.values.LastOrDefault();
             }
         }
     }

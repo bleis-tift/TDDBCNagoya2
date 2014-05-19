@@ -17,7 +17,7 @@ namespace TodoList.Core.Tests
         [TestCase("買い物", "牛乳と卵を買う")]
         public void 空のTodoTableにTodoを追加してその詳細が取得できる(string title, string detail)
         {
-            var todoTable = new TodoTable(Storage.Null);
+            var todoTable = new TodoTable(Storage.Memory);
             todoTable.Add(new Todo(title, detail));
             Assert.That(todoTable.GetLastTodo(), Is.EqualTo(new Todo(title, detail)));
         }
@@ -27,8 +27,7 @@ namespace TodoList.Core.Tests
         public void 空のTodoTableにTodoを追加したものはストレージに保存される(string title, string detail)
         {
             var storage = new Mock<IStorage>();
-            storage.Setup(_ => _.LoadAllTodo()).Returns(new List<Todo>());
-            storage.Setup(_ => _.Save(new Todo(title, detail)));
+            storage.Setup(_ => _.Append(new Todo(title, detail)));
 
             var todoTable = new TodoTable(storage.Object);
             todoTable.Add(new Todo(title, detail));
