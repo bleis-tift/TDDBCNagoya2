@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace TodoList.CommandLine
 {
@@ -11,7 +12,14 @@ namespace TodoList.CommandLine
     {
         static void Main(string[] args)
         {
-            File.WriteAllText("backup.xml", "<TodoList><Todo><Title>買い物</Title><Detail>牛乳と卵を買う</Detail></Todo></TodoList>");
+            var command = args[0];
+            var title = args[1];
+            var detail = args[2];
+            var content = new XElement("TodoList",
+                new XElement("Todo",
+                    new XElement("Title", title),
+                    new XElement("Detail", detail)));
+            content.Save("backup.xml");
         }
     }
 }

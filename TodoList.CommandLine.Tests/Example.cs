@@ -6,23 +6,31 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using System.Diagnostics;
 using System.Xml.Linq;
+using System.IO;
 
 namespace TodoList.CommandLine.Tests
 {
     [TestFixture]
     public class Example
     {
-        [Test]
-        public void TODOを追加するとファイルにTODOが出力される()
+        [SetUp]
+        public void SetUp()
         {
-            var procInfo = new ProcessStartInfo("TodoList.exe", "add 買い物 牛乳と卵を買う");
+            // TearDownで消してしまうと、テスト失敗時にbackup.xmlの調査ができなくなって困るので、テスト開始時に消すことにする
+            if (File.Exists("backup.xml"))
+                File.Delete("backup.xml");
+        }
+
+        [TestCase("買い物", "牛乳と卵を買う", "<TodoList><Todo><Title>買い物</Title><Detail>牛乳と卵を買う</Detail></Todo></TodoList>")]
+        [TestCase("買い物メモ", "牛乳と卵", "<TodoList><Todo><Title>買い物メモ</Title><Detail>牛乳と卵</Detail></Todo></TodoList>")]
+        public void TODOを追加するとファイルにTODOが出力される(string title, string detail, string expected)
+        {
+            var procInfo = new ProcessStartInfo("TodoList.exe", string.Format("add {0} {1}", title, detail));
             using (var proc = Process.Start(procInfo))
             {
                 proc.WaitForExit();
                 var backup = XDocument.Load("backup.xml");
-                Assert.That(
-                    backup.ToString(SaveOptions.DisableFormatting),
-                    Is.EqualTo("<TodoList><Todo><Title>買い物</Title><Detail>牛乳と卵を買う</Detail></Todo></TodoList>"));
+                Assert.That(backup.ToString(SaveOptions.DisableFormatting), Is.EqualTo(expected));
             }
         }
     }
