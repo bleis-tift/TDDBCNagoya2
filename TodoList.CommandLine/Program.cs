@@ -32,6 +32,9 @@ namespace TodoList.CommandLine
                 case "show":
                     Show(todoTable, args[1]);
                     break;
+                case "clear":
+                    Clear(todoTable);
+                    break;
             }
         }
 
@@ -89,6 +92,17 @@ namespace TodoList.CommandLine
                 Console.Error.WriteLine("エラー: TODOがありません。");
             else
                 Console.WriteLine(todo);
+        }
+
+        private static void Clear(TodoTable todoTable)
+        {
+            while (true)
+            {
+                var todo = todoTable.DeleteFirstTodo();
+                if (todo == null)
+                    break;
+            }
+            storage.Save();
         }
     }
 }
