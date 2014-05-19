@@ -20,6 +20,9 @@ namespace TodoList.CommandLine
             var command = args[0];
             switch (command)
             {
+                case "list":
+                    List(todoTable);
+                    break;
                 case "add":
                     Add(todoTable, args[1], args[2]);
                     break;
@@ -27,6 +30,11 @@ namespace TodoList.CommandLine
                     Show(todoTable, args[1]);
                     break;
             }
+        }
+
+        static void List(TodoTable todoTable)
+        {
+            Console.WriteLine("TODOはありません。");
         }
 
         private static void Add(TodoTable todoTable, string title, string detail)
