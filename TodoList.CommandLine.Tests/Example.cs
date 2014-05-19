@@ -51,11 +51,10 @@ namespace TodoList.CommandLine.Tests
             }
         }
 
-        [Test]
-        public void Todoを1つ追加した状態で最後に追加されたTODOの詳細が見れる()
+        [TestCase("買い物メモ", "牛乳と卵", "タイトル: 買い物メモ\r\n詳細: 牛乳と卵\r\n")]
+        [TestCase("買い物", "牛乳と卵を買う", "タイトル: 買い物\r\n詳細: 牛乳と卵を買う\r\n")]
+        public void Todoを1つ追加した状態で最後に追加されたTODOの詳細が見れる(string title, string detail, string expected)
         {
-            var title = "買い物メモ";
-            var detail = "牛乳と卵";
             var procInfo = new ProcessStartInfo("TodoList.exe", string.Format("add {0} {1}", title, detail));
             using (var proc = Process.Start(procInfo))
             {
@@ -72,7 +71,7 @@ namespace TodoList.CommandLine.Tests
             {
                 proc.Start();
                 var output = proc.StandardOutput.ReadToEnd();
-                Assert.That(output, Is.EqualTo(string.Format("タイトル: {0}\r\n詳細: {1}\r\n", title, detail)));
+                Assert.That(output, Is.EqualTo(expected));
             }
         }
     }
