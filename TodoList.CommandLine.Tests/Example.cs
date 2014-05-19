@@ -74,6 +74,13 @@ namespace TodoList.CommandLine.Tests
             }
 
             [Test]
+            public void 追加されたTODO一覧が見れる()
+            {
+                var output = ExecuteAndReadStream(StreamKind.StandardOutput, "list");
+                Assert.That(output, Is.EqualTo("TODOはありません。\r\n"));
+            }
+
+            [Test]
             public void 最初に追加されたTodoを見ようとするとエラーが表示される()
             {
                 var output = ExecuteAndReadStream(StreamKind.StandardError, "show", "first");
