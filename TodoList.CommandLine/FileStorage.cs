@@ -11,10 +11,7 @@ namespace TodoList.CommandLine
     {
         public void Save(Todo todo)
         {
-            var xml = new XElement("TodoList",
-                new XElement("Todo",
-                    new XElement("Title", todo.Title),
-                    new XElement("Detail", todo.Detail)));
+            var xml = new XElement("TodoList", todo.ToXml());
             xml.Save("backup.xml");
         }
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 
 namespace TodoList.Core
 {
@@ -18,6 +19,13 @@ namespace TodoList.Core
 
         public string Title { get { return this.title; } }
         public string Detail { get { return this.detail; } }
+
+        public XElement ToXml()
+        {
+            return new XElement("Todo",
+                new XElement("Title", this.title),
+                new XElement("Detail", this.detail));
+        }
 
         public bool Equals(Todo other)
         {
