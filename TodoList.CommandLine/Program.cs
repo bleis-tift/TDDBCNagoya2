@@ -34,7 +34,18 @@ namespace TodoList.CommandLine
 
         static void List(TodoTable todoTable)
         {
-            Console.WriteLine("TODOはありません。");
+            var titles = todoTable.GetAllTitles();
+            if (titles.Any() == false)
+                Console.WriteLine("TODOはありません。");
+            else
+            {
+                var i = 1;
+                foreach (var title in titles)
+                {
+                    Console.WriteLine(i + ": " + title);
+                    i++;
+                }
+            } 
         }
 
         private static void Add(TodoTable todoTable, string title, string detail)

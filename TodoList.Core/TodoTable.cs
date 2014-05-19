@@ -28,5 +28,10 @@ namespace TodoList.Core
         {
             return this.storage.GetFirstTodo();
         }
+
+        public IEnumerable<string> GetAllTitles()
+        {
+            return this.storage.GetAllTitles();
+        }
     }
 }

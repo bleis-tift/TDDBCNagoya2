@@ -12,6 +12,8 @@ namespace TodoList.Core
         Todo GetFirstTodo();
 
         Todo GetLastTodo();
+
+        IEnumerable<string> GetAllTitles();
     }
 
     public static class Storage
@@ -35,6 +37,11 @@ namespace TodoList.Core
             public Todo GetLastTodo()
             {
                 return this.values.LastOrDefault();
+            }
+
+            public IEnumerable<string> GetAllTitles()
+            {
+                return this.values.Select(todo => todo.Title);
             }
         }
     }

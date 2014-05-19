@@ -34,6 +34,11 @@ namespace TodoList.CommandLine
             return this.values.LastOrDefault();
         }
 
+        public IEnumerable<string> GetAllTitles()
+        {
+            return this.values.Select(todo => todo.Title);
+        }
+
         public void Save()
         {
             var xml = new XElement("TodoList", this.values.Select(todo => todo.ToXml()));
