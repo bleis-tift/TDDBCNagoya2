@@ -100,6 +100,13 @@ namespace TodoList.CommandLine.Tests
                 var output = ExecuteAndReadStream(StreamKind.StandardError, "delete", "first");
                 Assert.That(output, Is.EqualTo("エラー: TODOがありません。\r\n"));
             }
+
+            [Test]
+            public void 全削除してもエラーにならない()
+            {
+                var output = ExecuteAndReadStream(StreamKind.StandardError, "clear");
+                Assert.That(output, Is.EqualTo(""));
+            }
         }
 
         [TestCase("買い物", "牛乳と卵を買う", "<TodoList><Todo><Title>買い物</Title><Detail>牛乳と卵を買う</Detail></Todo></TodoList>")]
