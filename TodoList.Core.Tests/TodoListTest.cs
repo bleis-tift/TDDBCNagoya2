@@ -22,14 +22,15 @@ namespace TodoList.Core.Tests
             Assert.That(todoTable.GetLastTodo(), Is.EqualTo(new Todo(title, detail)));
         }
 
-        [Test]
-        public void 空のTodoTableにTodoを追加したものをストレージに保存できる()
+        [TestCase("買い物メモ", "牛乳と卵")]
+        [TestCase("買い物", "牛乳と卵を買う")]
+        public void 空のTodoTableにTodoを追加したものをストレージに保存できる(string title, string detail)
         {
             var storage = new Mock<IStorage>();
-            storage.Setup(_ => _.Save(new List<Todo> { new Todo("買い物", "牛乳と卵を買う") }));
+            storage.Setup(_ => _.Save(new List<Todo> { new Todo(title, detail) }));
 
             var todoTable = new TodoTable(storage.Object);
-            todoTable.Add(new Todo("買い物", "牛乳と卵を買う"));
+            todoTable.Add(new Todo(title, detail));
             todoTable.Buckup();
 
             storage.VerifyAll();
