@@ -169,6 +169,15 @@ namespace TodoList.CommandLine.Tests
                 var expected = "<TodoList><Todo><Title>買い物2</Title><Detail>筆記用具</Detail></Todo></TodoList>";
                 Assert.That(backup.ToString(SaveOptions.DisableFormatting), Is.EqualTo(expected));
             }
+
+            [Test]
+            public void 最後に追加されたTODOを削除するとバックアップから消える()
+            {
+                var output = ExecuteAndReadStream(StreamKind.StandardOutput, "delete", "last");
+                var backup = XDocument.Load("backup.xml");
+                var expected = "<TodoList><Todo><Title>買い物</Title><Detail>牛乳と卵</Detail></Todo></TodoList>";
+                Assert.That(backup.ToString(SaveOptions.DisableFormatting), Is.EqualTo(expected));
+            }
         }
     }
 }
