@@ -93,5 +93,14 @@ namespace TodoList.CommandLine.Tests
             var output = ExecuteAndReadStream(StreamKind.StandardOutput, "show", "last");
             Assert.That(output, Is.EqualTo("タイトル: 買い物2\r\n詳細: 筆記用具\r\n"));
         }
+
+        [TestCase("買い物メモ", "牛乳と卵", "タイトル: 買い物メモ\r\n詳細: 牛乳と卵\r\n")]
+        [TestCase("買い物", "牛乳と卵を買う", "タイトル: 買い物\r\n詳細: 牛乳と卵を買う\r\n")]
+        public void Todoを1つ追加した状態で最初に追加されたTODOの詳細が見れる(string title, string detail, string expected)
+        {
+            Execute("add", title, detail);
+            var output = ExecuteAndReadStream(StreamKind.StandardOutput, "show", "first");
+            Assert.That(output, Is.EqualTo(expected));
+        }
     }
 }
