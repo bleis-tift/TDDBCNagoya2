@@ -7,6 +7,19 @@ namespace TodoList.Core
 {
     public interface IStorage
     {
-        void Save(IEnumerable<Todo> list);
+        void Save(Todo todo);
+    }
+
+    public static class Storage
+    {
+        public static readonly IStorage Null = new NullStorage();
+
+        class NullStorage : IStorage
+        {
+            public void Save(Todo todo)
+            {
+                // do nothing
+            }
+        }
     }
 }

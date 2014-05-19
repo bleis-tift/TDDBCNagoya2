@@ -17,21 +17,20 @@ namespace TodoList.Core.Tests
         [TestCase("買い物", "牛乳と卵を買う")]
         public void 空のTodoTableにTodoを追加してその詳細が取得できる(string title, string detail)
         {
-            var todoTable = new TodoTable(null);
+            var todoTable = new TodoTable(Storage.Null);
             todoTable.Add(new Todo(title, detail));
             Assert.That(todoTable.GetLastTodo(), Is.EqualTo(new Todo(title, detail)));
         }
 
         [TestCase("買い物メモ", "牛乳と卵")]
         [TestCase("買い物", "牛乳と卵を買う")]
-        public void 空のTodoTableにTodoを追加したものをストレージに保存できる(string title, string detail)
+        public void 空のTodoTableにTodoを追加したものはストレージに保存される(string title, string detail)
         {
             var storage = new Mock<IStorage>();
-            storage.Setup(_ => _.Save(new List<Todo> { new Todo(title, detail) }));
+            storage.Setup(_ => _.Save(new Todo(title, detail)));
 
             var todoTable = new TodoTable(storage.Object);
             todoTable.Add(new Todo(title, detail));
-            todoTable.Buckup();
 
             storage.VerifyAll();
         }

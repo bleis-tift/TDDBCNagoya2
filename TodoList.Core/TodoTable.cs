@@ -18,16 +18,12 @@ namespace TodoList.Core
         public void Add(Todo todo)
         {
             this.values.Add(todo);
+            this.storage.Save(todo);
         }
 
         public Todo GetLastTodo()
         {
             return this.values.LastOrDefault();
-        }
-
-        public void Buckup()
-        {
-            this.storage.Save(this.values);
         }
     }
 }
