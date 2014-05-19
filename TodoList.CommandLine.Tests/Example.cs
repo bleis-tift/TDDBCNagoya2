@@ -33,5 +33,22 @@ namespace TodoList.CommandLine.Tests
                 Assert.That(backup.ToString(SaveOptions.DisableFormatting), Is.EqualTo(expected));
             }
         }
+
+        [Test]
+        public void 初期状態で最後に追加されたTODOを見ようとするとエラーが表示される()
+        {
+            var procInfo = new ProcessStartInfo("TodoList.exe", "show last")
+            {
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                RedirectStandardError = true
+            };
+            using (var proc = new Process { StartInfo = procInfo })
+            {
+                proc.Start();
+                var output = proc.StandardError.ReadToEnd();
+                Assert.That(output, Is.EqualTo("エラー: TODOがありません。"));
+            }
+        }
     }
 }
