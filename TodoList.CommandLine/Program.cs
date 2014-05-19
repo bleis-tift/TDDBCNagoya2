@@ -26,6 +26,9 @@ namespace TodoList.CommandLine
                 case "add":
                     Add(todoTable, args[1], args[2]);
                     break;
+                case "delete":
+                    Delete(todoTable, args[1]);
+                    break;
                 case "show":
                     Show(todoTable, args[1]);
                     break;
@@ -53,6 +56,22 @@ namespace TodoList.CommandLine
             var todo = new Todo(title, detail);
             todoTable.Add(todo);
             storage.Save();
+        }
+
+        static readonly IDictionary<string, Func<TodoTable, Todo>> deleters = new Dictionary<string, Func<TodoTable, Todo>>
+        {
+            { "first", todoTable => todoTable.GetFirstTodo() },
+            { "last", todoTable => todoTable.GetLastTodo() }
+        };
+
+        private static void Delete(TodoTable todoTable, string type)
+        {
+            var deleter = deleters[type];
+            var todo = deleter(todoTable);
+            if (todo == null)
+                Console.Error.WriteLine("エラー: TODOがありません。");
+            else
+                Console.WriteLine(todo);
         }
 
         static readonly IDictionary<string, Func<TodoTable, Todo>> getters = new Dictionary<string, Func<TodoTable, Todo>>
