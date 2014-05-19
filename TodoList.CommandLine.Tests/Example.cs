@@ -13,12 +13,16 @@ namespace TodoList.CommandLine.Tests
     [TestFixture]
     public class Example
     {
+        static void DeleteBackupIfExists()
+        {
+            if (File.Exists("backup.xml"))
+                File.Delete("backup.xml");
+        }
+
         [SetUp]
         public void SetUp()
         {
-            // TearDownで消してしまうと、テスト失敗時にbackup.xmlの調査ができなくなって困るので、テスト開始時に消すことにする
-            if (File.Exists("backup.xml"))
-                File.Delete("backup.xml");
+            DeleteBackupIfExists();
         }
 
         static void Execute(string subcommand, params string[] args)
@@ -60,6 +64,30 @@ namespace TodoList.CommandLine.Tests
             }
         }
 
+        [TestFixture]
+        public class 初期状態
+        {
+            [SetUp]
+            public void SetUp()
+            {
+                DeleteBackupIfExists();
+            }
+
+            [Test]
+            public void 最初に追加されたTodoを見ようとするとエラーが表示される()
+            {
+                var output = ExecuteAndReadStream(StreamKind.StandardError, "show", "first");
+                Assert.That(output, Is.EqualTo("エラー: TODOがありません。\r\n"));
+            }
+
+            [Test]
+            public void 最後に追加されたTodoを見ようとするとエラーが表示される()
+            {
+                var output = ExecuteAndReadStream(StreamKind.StandardError, "show", "last");
+                Assert.That(output, Is.EqualTo("エラー: TODOがありません。\r\n"));
+            }
+        }
+
         [TestCase("買い物", "牛乳と卵を買う", "<TodoList><Todo><Title>買い物</Title><Detail>牛乳と卵を買う</Detail></Todo></TodoList>")]
         [TestCase("買い物メモ", "牛乳と卵", "<TodoList><Todo><Title>買い物メモ</Title><Detail>牛乳と卵</Detail></Todo></TodoList>")]
         public void TODOを追加するとファイルにTODOが出力される(string title, string detail, string expected)
@@ -67,13 +95,6 @@ namespace TodoList.CommandLine.Tests
             Execute("add", title, detail);
             var backup = XDocument.Load("backup.xml");
             Assert.That(backup.ToString(SaveOptions.DisableFormatting), Is.EqualTo(expected));
-        }
-
-        [Test]
-        public void 初期状態で最後に追加されたTODOを見ようとするとエラーが表示される()
-        {
-            var output = ExecuteAndReadStream(StreamKind.StandardError, "show", "last");
-            Assert.That(output, Is.EqualTo("エラー: TODOがありません。\r\n"));
         }
 
         [TestCase("買い物メモ", "牛乳と卵", "タイトル: 買い物メモ\r\n詳細: 牛乳と卵\r\n")]
@@ -85,15 +106,6 @@ namespace TodoList.CommandLine.Tests
             Assert.That(output, Is.EqualTo(expected));
         }
 
-        [Test]
-        public void Todoを2つ追加した状態で最後に追加されたTODOの詳細が見れる()
-        {
-            Execute("add", "買い物", "牛乳と卵");
-            Execute("add", "買い物2", "筆記用具");
-            var output = ExecuteAndReadStream(StreamKind.StandardOutput, "show", "last");
-            Assert.That(output, Is.EqualTo("タイトル: 買い物2\r\n詳細: 筆記用具\r\n"));
-        }
-
         [TestCase("買い物メモ", "牛乳と卵", "タイトル: 買い物メモ\r\n詳細: 牛乳と卵\r\n")]
         [TestCase("買い物", "牛乳と卵を買う", "タイトル: 買い物\r\n詳細: 牛乳と卵を買う\r\n")]
         public void Todoを1つ追加した状態で最初に追加されたTODOの詳細が見れる(string title, string detail, string expected)
@@ -103,13 +115,30 @@ namespace TodoList.CommandLine.Tests
             Assert.That(output, Is.EqualTo(expected));
         }
 
-        [Test]
-        public void Todoを2つ追加した状態で最初に追加されたTODOの詳細が見れる()
+        [TestFixture]
+        public class Todoを2つ追加した状態
         {
-            Execute("add", "買い物", "牛乳と卵");
-            Execute("add", "買い物2", "筆記用具");
-            var output = ExecuteAndReadStream(StreamKind.StandardOutput, "show", "first");
-            Assert.That(output, Is.EqualTo("タイトル: 買い物\r\n詳細: 牛乳と卵\r\n"));
+            [SetUp]
+            public void SetUp()
+            {
+                DeleteBackupIfExists();
+                Execute("add", "買い物", "牛乳と卵");
+                Execute("add", "買い物2", "筆記用具");
+            }
+
+            [Test]
+            public void 最初に追加したTODOの詳細が見れる()
+            {
+                var output = ExecuteAndReadStream(StreamKind.StandardOutput, "show", "first");
+                Assert.That(output, Is.EqualTo("タイトル: 買い物\r\n詳細: 牛乳と卵\r\n"));
+            }
+
+            [Test]
+            public void 最後に追加したTODOの詳細が見れる()
+            {
+                var output = ExecuteAndReadStream(StreamKind.StandardOutput, "show", "last");
+                Assert.That(output, Is.EqualTo("タイトル: 買い物2\r\n詳細: 筆記用具\r\n"));
+            }
         }
     }
 }
