@@ -16,6 +16,9 @@ namespace TodoList.Core
             this.detail = detail;
         }
 
+        public string Title { get { return this.title; } }
+        public string Detail { get { return this.detail; } }
+
         public bool Equals(Todo other)
         {
             return this.title == other.title && this.detail == other.detail;

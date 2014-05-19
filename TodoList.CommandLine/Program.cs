@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using TodoList.Core;
 
 namespace TodoList.CommandLine
 {
@@ -12,14 +13,15 @@ namespace TodoList.CommandLine
     {
         static void Main(string[] args)
         {
+            var storage = new FileStorage();
+            var todoTable = new TodoTable(storage);
+
             var command = args[0];
             var title = args[1];
             var detail = args[2];
-            var content = new XElement("TodoList",
-                new XElement("Todo",
-                    new XElement("Title", title),
-                    new XElement("Detail", detail)));
-            content.Save("backup.xml");
+
+            var todo = new Todo(title, detail);
+            todoTable.Add(todo);
         }
     }
 }
