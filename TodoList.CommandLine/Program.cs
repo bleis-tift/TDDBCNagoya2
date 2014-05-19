@@ -17,11 +17,19 @@ namespace TodoList.CommandLine
             var todoTable = new TodoTable(storage);
 
             var command = args[0];
-            var title = args[1];
-            var detail = args[2];
+            switch (command)
+            {
+                case "add":
+                    var title = args[1];
+                    var detail = args[2];
 
-            var todo = new Todo(title, detail);
-            todoTable.Add(todo);
+                    var todo = new Todo(title, detail);
+                    todoTable.Add(todo);
+                    break;
+                case "show":
+                    Console.Error.WriteLine("エラー: TODOがありません。");
+                    break;
+            }
         }
     }
 }

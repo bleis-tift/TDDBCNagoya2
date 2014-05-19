@@ -47,7 +47,7 @@ namespace TodoList.CommandLine.Tests
             {
                 proc.Start();
                 var output = proc.StandardError.ReadToEnd();
-                Assert.That(output, Is.EqualTo("エラー: TODOがありません。"));
+                Assert.That(output, Is.EqualTo("エラー: TODOがありません。\r\n"));
             }
         }
     }
