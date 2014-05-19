@@ -5,16 +5,33 @@ using System.Text;
 
 namespace TodoList.Core
 {
-    public class Todo
+    public class Todo : IEquatable<Todo>
     {
-        private string p1;
-        private string p2;
+        readonly string title;
+        readonly string detail;
 
-        public Todo(string p1, string p2)
+        public Todo(string title, string detail)
         {
-            // TODO: Complete member initialization
-            this.p1 = p1;
-            this.p2 = p2;
+            this.title = title;
+            this.detail = detail;
+        }
+
+        public bool Equals(Todo other)
+        {
+            return this.title == other.title && this.detail == other.detail;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as Todo;
+            if (other == null)
+                return false;
+            return this.Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return Tuple.Create(this.title, this.detail).GetHashCode();
         }
     }
 }

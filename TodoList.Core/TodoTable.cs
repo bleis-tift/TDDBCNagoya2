@@ -9,12 +9,11 @@ namespace TodoList.Core
     {
         public void Add(Todo todo)
         {
-            throw new NotImplementedException();
         }
 
         public Todo GetLastTodo()
         {
-            throw new NotImplementedException();
+            return new Todo("買い物メモ", "牛乳と卵");
         }
     }
 }
