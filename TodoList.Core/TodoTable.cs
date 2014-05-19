@@ -27,7 +27,7 @@ namespace TodoList.Core
 
         public void Buckup()
         {
-            throw new NotImplementedException();
+            this.storage.Save(this.values);
         }
     }
 }
