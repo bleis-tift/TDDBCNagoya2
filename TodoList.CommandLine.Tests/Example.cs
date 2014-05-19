@@ -50,5 +50,30 @@ namespace TodoList.CommandLine.Tests
                 Assert.That(output, Is.EqualTo("エラー: TODOがありません。\r\n"));
             }
         }
+
+        [Test]
+        public void Todoを1つ追加した状態で最後に追加されたTODOの詳細が見れる()
+        {
+            var title = "買い物メモ";
+            var detail = "牛乳と卵";
+            var procInfo = new ProcessStartInfo("TodoList.exe", string.Format("add {0} {1}", title, detail));
+            using (var proc = Process.Start(procInfo))
+            {
+                proc.WaitForExit();
+            }
+
+            procInfo = new ProcessStartInfo("TodoList.exe", "show last")
+            {
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                RedirectStandardOutput = true
+            };
+            using (var proc = new Process { StartInfo = procInfo })
+            {
+                proc.Start();
+                var output = proc.StandardOutput.ReadToEnd();
+                Assert.That(output, Is.EqualTo(string.Format("タイトル: {0}\r\n詳細: {1}", title, detail)));
+            }
+        }
     }
 }
